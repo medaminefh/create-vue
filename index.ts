@@ -44,6 +44,7 @@ const FEATURE_FLAGS = [
   'eslint',
   'prettier',
   'eslint-with-prettier',
+  'tailwindcss',
   'oxlint',
   'rolldown-vite',
 ] as const
@@ -80,6 +81,10 @@ const FEATURE_OPTIONS = [
   {
     value: 'prettier',
     label: language.needsPrettier.message,
+  },
+  {
+    value: 'tailwindcss',
+    label: language.needsTailwind.message,
   },
 ] as const
 const EXPERIMENTAL_FEATURE_OPTIONS = [
@@ -198,6 +203,8 @@ Available feature flags:
     Add Prettier for code formatting in addition to ESLint.
   --prettier
     Add Prettier for code formatting.
+  --tailwindcss
+    Add Tailwind CSS for styling.
   --oxlint
     Add Oxlint for code quality and formatting.
   --rolldown-vite
@@ -378,6 +385,7 @@ async function init() {
   const needsEslint = argv.eslint || argv['eslint-with-prettier'] || features.includes('eslint')
   const needsPrettier =
     argv.prettier || argv['eslint-with-prettier'] || features.includes('prettier')
+  const needsTailwind = argv.tailwindcss || features.includes('tailwindcss')
   const needsOxlint = experimentFeatures.includes('oxlint') || argv['oxlint']
   const needsRolldownVite = experimentFeatures.includes('rolldown-vite') || argv['rolldown-vite']
 
@@ -530,6 +538,10 @@ async function init() {
 
   if (needsPrettier) {
     render('config/prettier')
+  }
+
+  if (needsTailwind) {
+    render('config/tailwindcss')
   }
 
   // use rolldown-vite if the feature is enabled
